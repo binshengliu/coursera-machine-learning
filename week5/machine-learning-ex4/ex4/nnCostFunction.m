@@ -85,8 +85,33 @@ J += (sum(sumsq(Theta1(:, 2:end))) + sum(sumsq(Theta2(:, 2:end)))) * lambda / (m
 %               first time.
 %
 
+## For clarity, I do the forward propagation again.
+Delta_1 = zeros(size(Theta1));
+Delta_2 = zeros(size(Theta2));
 
+for i = 1:m
+  a1 = X(i, :)';
+  z2 = Theta1 * a1;
+  a2 = sigmoid(z2);
 
+  a2 = [1; a2];
+  z3 = Theta2 * a2;
+  a3 = sigmoid(z3);
+
+  yi = zeros(num_labels, 1);
+  yi(y(i)) = 1;
+
+  delta_3 = a3 - yi;
+
+  ## delta_2_0 is already discarded
+  delta_2 = (Theta2(:, 2:end)' * delta_3) .* sigmoidGradient(z2);
+
+  Delta_2 += delta_3 * a2';
+  Delta_1 += delta_2 * a1';
+endfor
+
+Theta1_grad = Delta_1 / m;
+Theta2_grad = Delta_2 / m;
 
 % Part 3: Implement regularization with the cost function and gradients.
 %
@@ -97,14 +122,13 @@ J += (sum(sumsq(Theta1(:, 2:end))) + sum(sumsq(Theta2(:, 2:end)))) * lambda / (m
 %
 
 
+reg1 = Theta1 * lambda / m;
+reg1(:, 1) = 0;
+Theta1_grad = Theta1_grad .+ reg1;
 
-
-
-
-
-
-
-
+reg2 = Theta2 * lambda / m;
+reg2(:, 1) = 0;
+Theta2_grad = Theta2_grad .+ reg2;
 
 
 
