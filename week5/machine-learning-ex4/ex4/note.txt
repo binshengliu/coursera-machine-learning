@@ -1,0 +1,14 @@
+https://www.coursera.org/learn/machine-learning/discussions/forums/8LDwTL2SEeSEJSIACyEKsQ/threads/_et09TGlEea-YhKdNUv9pQ
+
+When you run the submit script, to fix the error "urlread: peer certificate..." issue, and also some other types of "urlread" errors, do the following:
+
+1) In the exercise /lib folder, edit and save the file submitWithConfiguration.m, changing line 66 from this:
+
+responseBody = urlread(submissionUrl, 'post', params);
+
+to this:
+
+[code, responseBody] = system(sprintf('echo ''jsonBody=%s'' | curl -k -X POST -d @- %s', body, submissionUrl));
+
+2) Then restart Octave.
+
