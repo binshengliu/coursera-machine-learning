@@ -21,11 +21,19 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
-
+for x = 1:rows(X)
+  smallest_idx = 0;
+  smallest_dist = 999999999;
+  for c = 1:rows(centroids)
+    dif = X(x, :) .- centroids(c, :);
+    dist = sumsq(dif(:));
+    if dist < smallest_dist
+      smallest_dist = dist;
+      smallest_idx = c;
+    endif
+  endfor
+  idx(x) = smallest_idx;
+endfor
 
 % =============================================================
 

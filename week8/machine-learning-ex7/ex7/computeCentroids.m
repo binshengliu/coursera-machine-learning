@@ -26,12 +26,11 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
-
-
-
-
-
+for c = 1:rows(centroids)
+  current_idx = (idx == c);		#logical array
+  current_X = X(current_idx, :);
+  centroids(c, :) = sum(current_X, 1) / sum(current_idx); #sum along the column
+endfor
 
 % =============================================================
 
